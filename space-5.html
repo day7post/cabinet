@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>构件收藏柜</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #ecefe9;
+        --bg-deep: #dde3d8;
+        --surface: #fdfefb;
+        --surface-2: #f3f5ef;
+        --ink: #1b2420;
+        --ink-soft: #3c4a43;
+        --muted: #68766e;
+        --line: #d2d9cf;
+        --line-strong: #b9c4b4;
+        --accent: #1d5c3f;
+        --accent-ink: #ffffff;
+        --drone: #1e4f8f;
+        --drone-soft: #dbe8f7;
+        --neuron: #0f6b5c;
+        --neuron-soft: #d7ece7;
+        --quiz: #9a5410;
+        --quiz-soft: #f6e7cf;
+        --weekend: #a83c2a;
+        --weekend-soft: #f7e2da;
+        --plan: #4f5aa8;
+        --plan-soft: #e2e4f4;
+        --match: #96690f;
+        --match-soft: #f4ead0;
+        --shadow: 0 1px 2px rgba(27,36,32,.06), 0 10px 28px -14px rgba(27,36,32,.22);
+        --shadow-hover: 0 2px 4px rgba(27,36,32,.07), 0 18px 36px -14px rgba(27,36,32,.30);
+        --radius: 18px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #131815;
+          --bg-deep: #0e1210;
+          --surface: #1e2622;
+          --surface-2: #242e29;
+          --ink: #e9efe9;
+          --ink-soft: #c3cec5;
+          --muted: #93a398;
+          --line: #314038;
+          --line-strong: #43554b;
+          --accent: #7fc79e;
+          --accent-ink: #12211a;
+          --drone: #8fc0f5;
+          --drone-soft: #22344d;
+          --neuron: #6fd3bd;
+          --neuron-soft: #1d3833;
+          --quiz: #eeb264;
+          --quiz-soft: #3d2f1a;
+          --weekend: #f0937e;
+          --weekend-soft: #3d2921;
+          --plan: #a6abec;
+          --plan-soft: #2a2d4e;
+          --match: #e5c46c;
+          --match-soft: #3a3118;
+          --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 30px -14px rgba(0,0,0,.55);
+          --shadow-hover: 0 2px 6px rgba(0,0,0,.4), 0 20px 40px -14px rgba(0,0,0,.65);
+        }
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
+      body {
+        font-family: "Noto Sans SC", "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.6;
+      }
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 40px 22px 56px;
+      }
+
+      /* ---------- 头部 ---------- */
+      header.top {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        padding-bottom: 22px;
+        border-bottom: 2px solid var(--ink);
+        flex-wrap: wrap;
+      }
+      .title-block { min-width: 0; }
+      h1 {
+        font-family: "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", serif;
+        font-weight: 900;
+        font-size: clamp(30px, 5.4vw, 44px);
+        line-height: 1.15;
+        letter-spacing: .02em;
+        margin: 0 0 10px;
+      }
+      .lead {
+        margin: 0;
+        font-size: 15.5px;
+        color: var(--ink-soft);
+        max-width: 34em;
+      }
+      .lead strong { color: var(--ink); font-weight: 700; }
+      .count-badge {
+        flex: none;
+        text-align: center;
+        border: 1.5px solid var(--line-strong);
+        background: var(--surface);
+        border-radius: 14px;
+        padding: 10px 20px 12px;
+        box-shadow: var(--shadow);
+      }
+      .count-badge .num {
+        font-family: "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", serif;
+        font-weight: 900;
+        font-size: 30px;
+        line-height: 1.1;
+        display: block;
+      }
+      .count-badge .lbl { font-size: 12.5px; color: var(--muted); letter-spacing: .08em; }
+
+      /* ---------- 分组分隔标 ---------- */
+      .section-head {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        margin: 34px 0 18px;
+      }
+      .section-head h2 {
+        font-family: "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", serif;
+        font-weight: 700;
+        font-size: 21px;
+        margin: 0;
+        white-space: nowrap;
+      }
+      .section-head .rule { flex: 1; height: 1px; background: var(--line-strong); min-width: 24px; }
+      .section-head .note { font-size: 13px; color: var(--muted); white-space: nowrap; }
+
+      /* ---------- 卡片网格 ---------- */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+      a.card {
+        display: flex;
+        flex-direction: column;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        box-shadow: var(--shadow);
+        transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      }
+      a.card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--line-strong); }
+      a.card:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+      @media (prefers-reduced-motion: reduce) {
+        a.card { transition: none; }
+        a.card:hover { transform: none; }
+      }
+
+      .visual {
+        height: 132px;
+        position: relative;
+        overflow: hidden;
+        flex: none;
+      }
+      .visual svg { display: block; width: 100%; height: 100%; }
+      .visual-drone { background: #101c30; }
+      .visual-neuron { background: var(--neuron-soft); }
+      .visual-quiz { background: var(--quiz-soft); }
+      .visual-weekend { background: var(--weekend-soft); }
+      .visual-plan { background: var(--plan-soft); }
+      .visual-match { background: var(--match-soft); }
+      @media (prefers-color-scheme: dark) {
+        .visual-drone { background: #0b1524; }
+      }
+      .visual .tag {
+        position: absolute;
+        top: 12px; left: 14px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .1em;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.88);
+        color: #22303a;
+      }
+      @media (prefers-color-scheme: dark) {
+        .visual .tag { background: rgba(14,20,17,.78); color: #e9efe9; }
+      }
+
+      .card-body {
+        padding: 20px 22px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        flex: 1;
+      }
+      .card-head { display: flex; align-items: baseline; gap: 10px; }
+      .card-head .no {
+        font-family: "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", serif;
+        font-weight: 700;
+        font-size: 15px;
+        color: var(--muted);
+        flex: none;
+      }
+      .card-head h3 {
+        font-family: "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", serif;
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 1.3;
+        margin: 0;
+      }
+      .desc {
+        margin: 0;
+        font-size: 14.5px;
+        color: var(--ink-soft);
+      }
+
+      .open-row {
+        margin-top: auto;
+        padding-top: 6px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .open-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 15px;
+        color: var(--accent-ink);
+        background: var(--accent);
+        padding: 9px 18px;
+        border-radius: 10px;
+      }
+      @media (prefers-color-scheme: dark) {
+        .open-btn { color: #12211a; }
+      }
+      .open-btn .arrow { font-size: 17px; line-height: 1; transition: transform .18s ease; }
+      a.card:hover .open-btn .arrow { transform: translateX(3px); }
+
+      /* ---------- 底部 ---------- */
+      footer.bottom {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line-strong);
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        font-size: 13.5px;
+        color: var(--muted);
+      }
+      footer.bottom p { margin: 0; }
+
+      /* ---------- 响应式 ---------- */
+      @media (max-width: 900px) {
+        .grid { grid-template-columns: 1fr 1fr; }
+      }
+      @media (max-width: 620px) {
+        .wrap { padding: 26px 16px 44px; }
+        header.top { padding-bottom: 18px; }
+        .count-badge { padding: 8px 16px 10px; }
+        .count-badge .num { font-size: 24px; }
+        .grid { grid-template-columns: 1fr; gap: 16px; }
+        .visual { height: 118px; }
+        .section-head .note { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <div class="title-block">
+          <h1>构件收藏柜</h1>
+          <p class="lead">做过的小玩具都收在这儿，一件一张卡，按<strong>正事</strong>和<strong>娱乐</strong>分开放。以后有新的，继续往这个柜子里加。</p>
+        </div>
+        <div class="count-badge" aria-label="当前共收纳 6 件构件">
+          <span class="num">6</span>
+          <span class="lbl">件 · 已收纳</span>
+        </div>
+      </header>
+
+      <main>
+        <!-- ===== 正事 ===== -->
+        <section aria-label="正事">
+          <div class="section-head">
+            <h2>正事</h2>
+            <span class="rule" aria-hidden="true"></span>
+            <span class="note">点任意一张卡片即可打开</span>
+          </div>
+          <div class="grid">
+            <!-- 1 每日计划 -->
+            <a class="card card-plan" href="/space/space-6">
+              <div class="visual visual-plan" aria-hidden="true">
+                <span class="tag">计划 · 时间线</span>
+                <svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice" role="presentation">
+                  <line x1="86" y1="18" x2="86" y2="116" stroke="currentColor" stroke-width="2.4" style="color:var(--plan)"/>
+                  <g fill="currentColor" style="color:var(--plan)">
+                    <circle cx="86" cy="30" r="5.5"/>
+                    <circle cx="86" cy="58" r="5.5" opacity=".75"/>
+                    <circle cx="86" cy="86" r="5.5" opacity=".5"/>
+                  </g>
+                  <circle cx="86" cy="110" r="5.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-dasharray="3.5 3.5" style="color:var(--plan)"/>
+                  <g stroke="currentColor" stroke-width="4" stroke-linecap="round" style="color:var(--plan)">
+                    <line x1="108" y1="30" x2="196" y2="30"/>
+                    <line x1="108" y1="58" x2="168" y2="58" opacity=".75"/>
+                    <line x1="108" y1="86" x2="214" y2="86" opacity=".5"/>
+                    <line x1="108" y1="110" x2="150" y2="110" opacity=".4"/>
+                  </g>
+                  <g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".55" style="color:var(--plan)">
+                    <circle cx="308" cy="52" r="24"/>
+                    <line x1="308" y1="52" x2="308" y2="38"/>
+                    <line x1="308" y1="52" x2="320" y2="58"/>
+                  </g>
+                  <path d="M262 104 C 292 96, 322 102, 352 92" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="5 5" opacity=".45" style="color:var(--plan)"/>
+                </svg>
+              </div>
+              <div class="card-body">
+                <div class="card-head">
+                  <span class="no">01</span>
+                  <h3>每日计划</h3>
+                </div>
+                <p class="desc">今天与明天的安排，时间在前、事项在后，每天早上自动刷新。</p>
+                <div class="open-row">
+                  <span class="open-btn">打开 <span class="arrow" aria-hidden="true">→</span></span>
+                </div>
+              </div>
+            </a>
+
+            <!-- 2 周末看板 -->
+            <a class="card card-weekend" href="/space/space">
+              <div class="visual visual-weekend" aria-hidden="true">
+                <span class="tag">汇总 · 每周更新</span>
+                <svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice" role="presentation">
+                  <g fill="none" stroke="currentColor" stroke-width="2" style="color:var(--weekend)">
+                    <rect x="56" y="24" width="132" height="86" rx="10" opacity=".55"/>
+                    <line x1="56" y1="46" x2="188" y2="46" opacity=".55"/>
+                  </g>
+                  <g fill="currentColor" style="color:var(--weekend)">
+                    <rect x="76" y="16" width="6" height="16" rx="3"/>
+                    <rect x="162" y="16" width="6" height="16" rx="3"/>
+                    <circle cx="78" cy="66" r="4" opacity=".4"/>
+                    <circle cx="100" cy="66" r="4" opacity=".4"/>
+                    <circle cx="122" cy="66" r="4" opacity=".4"/>
+                    <circle cx="144" cy="66" r="4" opacity=".4"/>
+                    <circle cx="166" cy="66" r="4"/>
+                    <circle cx="78" cy="88" r="4" opacity=".4"/>
+                    <circle cx="100" cy="88" r="4" opacity=".4"/>
+                    <circle cx="122" cy="88" r="4" opacity=".4"/>
+                    <circle cx="144" cy="88" r="4" opacity=".4"/>
+                    <circle cx="166" cy="88" r="4" opacity=".65"/>
+                  </g>
+                  <g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" style="color:var(--weekend)">
+                    <circle cx="292" cy="52" r="15" fill="none"/>
+                    <line x1="292" y1="26" x2="292" y2="32"/>
+                    <line x1="292" y1="72" x2="292" y2="78"/>
+                    <line x1="266" y1="52" x2="272" y2="52"/>
+                    <line x1="312" y1="52" x2="318" y2="52"/>
+                    <line x1="274" y1="34" x2="278" y2="38"/>
+                    <line x1="306" y1="66" x2="310" y2="70"/>
+                    <line x1="310" y1="34" x2="306" y2="38"/>
+                    <line x1="278" y1="66" x2="274" y2="70"/>
+                  </g>
+                  <path d="M238 104 C 268 94, 300 100, 330 90 C 344 85, 356 88, 366 94" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".55" style="color:var(--weekend)"/>
+                </svg>
+              </div>
+              <div class="card-body">
+                <div class="card-head">
+                  <span class="no">02</span>
+                  <h3>周末看板</h3>
+                </div>
+                <p class="desc">每周大信息汇总——我的大事与 AI 大事，每周五晚更新。</p>
+                <div class="open-row">
+                  <span class="open-btn">打开 <span class="arrow" aria-hidden="true">→</span></span>
+                </div>
+              </div>
+            </a>
+
+            <!-- 3 比赛汇总 -->
+            <a class="card card-match" href="/space/space-7">
+              <div class="visual visual-match" aria-hidden="true">
+                <span class="tag">竞赛 · 综测计分</span>
+                <svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice" role="presentation">
+                  <g fill="none" stroke="currentColor" stroke-width="2.2" style="color:var(--match)">
+                    <path d="M118 34 h64 v22 c0 20 -14 34 -32 34 c-18 0 -32 -14 -32 -34 z"/>
+                    <path d="M118 42 c-16 -2 -26 6 -26 16 c0 11 11 18 26 16"/>
+                    <path d="M182 42 c16 -2 26 6 26 16 c0 11 -11 18 -26 16"/>
+                    <line x1="150" y1="90" x2="150" y2="104"/>
+                    <line x1="132" y1="112" x2="168" y2="112"/>
+                  </g>
+                  <path d="M150 46 l4.2 8.6 9.5 1.4 -6.9 6.7 1.7 9.4 -8.5 -4.5 -8.5 4.5 1.7 -9.4 -6.9 -6.7 9.5 -1.4 z" fill="currentColor" style="color:var(--match)"/>
+                  <g fill="currentColor" style="color:var(--match)">
+                    <rect x="248" y="86" width="34" height="26" rx="3" opacity=".45"/>
+                    <rect x="282" y="66" width="34" height="46" rx="3"/>
+                    <rect x="316" y="96" width="34" height="16" rx="3" opacity=".65"/>
+                  </g>
+                  <g font-family="Noto Serif SC, Noto Serif CJK SC, Songti SC, STSong, SimSun, serif" font-weight="700" font-size="15" fill="currentColor" style="color:var(--match)">
+                    <text x="262" y="106" text-anchor="middle" opacity=".8">2</text>
+                    <text x="299" y="86" text-anchor="middle">1</text>
+                    <text x="333" y="110" text-anchor="middle" opacity=".8">3</text>
+                  </g>
+                  <g fill="currentColor" opacity=".5" style="color:var(--match)">
+                    <circle cx="238" cy="34" r="2.6"/>
+                    <circle cx="268" cy="24" r="2"/>
+                    <circle cx="330" cy="30" r="2.4"/>
+                    <circle cx="356" cy="48" r="2"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="card-body">
+                <div class="card-head">
+                  <span class="no">03</span>
+                  <h3>比赛汇总</h3>
+                </div>
+                <p class="desc">能打的比赛按综测认定类别列全——已在打的、值得新增的、要避坑的，附计分速览。</p>
+                <div class="open-row">
+                  <span class="open-btn">打开 <span class="arrow" aria-hidden="true">→</span></span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <!-- ===== 娱乐 ===== -->
+        <section aria-label="娱乐">
+          <div class="section-head">
+            <h2>娱乐</h2>
+            <span class="rule" aria-hidden="true"></span>
+          </div>
+          <div class="grid">
+            <!-- 4 每日小测 -->
+            <a class="card card-quiz" href="/space/space-4">
+              <div class="visual visual-quiz" aria-hidden="true">
+                <span class="tag">日常 · 自我观察</span>
+                <svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice" role="presentation">
+                  <g font-family="Noto Serif SC, Noto Serif CJK SC, Songti SC, STSong, SimSun, serif" font-weight="700">
+                    <rect x="52" y="26" width="118" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="2" opacity=".5" style="color:var(--quiz)"/>
+                    <path d="M68 48 l7 7 l13 -14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:var(--quiz)"/>
+                    <line x1="102" y1="48" x2="152" y2="48" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".55" style="color:var(--quiz)"/>
+                    <circle cx="72" cy="76" r="5.5" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".55" style="color:var(--quiz)"/>
+                    <line x1="102" y1="76" x2="152" y2="76" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".35" style="color:var(--quiz)"/>
+                    <circle cx="72" cy="96" r="5.5" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".3" style="color:var(--quiz)"/>
+                    <line x1="102" y1="96" x2="140" y2="96" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".22" style="color:var(--quiz)"/>
+                  </g>
+                  <g fill="currentColor" style="color:var(--quiz)">
+                    <rect x="216" y="86" width="20" height="26" rx="3" opacity=".35"/>
+                    <rect x="248" y="70" width="20" height="42" rx="3" opacity=".55"/>
+                    <rect x="280" y="54" width="20" height="58" rx="3" opacity=".75"/>
+                    <rect x="312" y="38" width="20" height="74" rx="3"/>
+                  </g>
+                  <path d="M222 78 C 252 62, 282 48, 322 28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="5 5" opacity=".6" style="color:var(--quiz)"/>
+                </svg>
+              </div>
+              <div class="card-body">
+                <div class="card-head">
+                  <span class="no">04</span>
+                  <h3>每日小测</h3>
+                </div>
+                <p class="desc">每天午休一道小测，结果存档，看自己的变化。</p>
+                <div class="open-row">
+                  <span class="open-btn">打开 <span class="arrow" aria-hidden="true">→</span></span>
+                </div>
+              </div>
+            </a>
+
+            <!-- 5 无人机灯光秀 -->
+            <a class="card card-drone" href="/space/space-2">
+              <div class="visual visual-drone" aria-hidden="true">
+                <span class="tag">视觉 · 编队</span>
+                <svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice" role="presentation">
+                  <circle cx="52" cy="34" r="3.2" fill="#7dd3fc"/>
+                  <circle cx="78" cy="24" r="2.4" fill="#fda4af"/>
+                  <circle cx="104" cy="38" r="2.8" fill="#fde68a"/>
+                  <circle cx="130" cy="22" r="2.2" fill="#86efac"/>
+                  <circle cx="158" cy="34" r="3" fill="#93c5fd"/>
+                  <circle cx="66" cy="62" r="2.6" fill="#fde68a"/>
+                  <circle cx="92" cy="56" r="3.2" fill="#7dd3fc"/>
+                  <circle cx="120" cy="64" r="2.4" fill="#fda4af"/>
+                  <circle cx="146" cy="52" r="2.8" fill="#86efac"/>
+                  <circle cx="84" cy="90" r="2.8" fill="#93c5fd"/>
+                  <circle cx="112" cy="96" r="2.3" fill="#fde68a"/>
+                  <circle cx="140" cy="86" r="3" fill="#7dd3fc"/>
+                  <circle cx="196" cy="30" r="2.4" fill="#fda4af" opacity=".8"/>
+                  <circle cx="224" cy="44" r="2.8" fill="#fde68a" opacity=".8"/>
+                  <circle cx="252" cy="28" r="2.2" fill="#86efac" opacity=".8"/>
+                  <circle cx="214" cy="74" r="3" fill="#93c5fd" opacity=".8"/>
+                  <circle cx="244" cy="82" r="2.5" fill="#7dd3fc" opacity=".8"/>
+                  <circle cx="272" cy="60" r="2.7" fill="#fda4af" opacity=".8"/>
+                  <circle cx="306" cy="36" r="2.6" fill="#fde68a" opacity=".65"/>
+                  <circle cx="332" cy="52" r="3" fill="#86efac" opacity=".65"/>
+                  <circle cx="352" cy="30" r="2.3" fill="#93c5fd" opacity=".65"/>
+                  <circle cx="322" cy="84" r="2.5" fill="#fda4af" opacity=".65"/>
+                  <circle cx="356" cy="76" r="2.8" fill="#7dd3fc" opacity=".65"/>
+                  <circle cx="30" cy="104" r="2" fill="#93c5fd" opacity=".5"/>
+                  <circle cx="368" cy="106" r="2.1" fill="#fde68a" opacity=".5"/>
+                  <circle cx="186" cy="104" r="2" fill="#86efac" opacity=".5"/>
+                  <circle cx="288" cy="108" r="2" fill="#fda4af" opacity=".5"/>
+                </svg>
+              </div>
+              <div class="card-body">
+                <div class="card-head">
+                  <span class="no">05</span>
+                  <h3>无人机灯光秀</h3>
+                </div>
+                <p class="desc">点阵编队小玩具，能排字、变阵。</p>
+                <div class="open-row">
+                  <span class="open-btn">打开 <span class="arrow" aria-hidden="true">→</span></span>
+                </div>
+              </div>
+            </a>
+
+            <!-- 6 单神经元小玩具 -->
+            <a class="card card-neuron" href="/space/space-3">
+              <div class="visual visual-neuron" aria-hidden="true">
+                <span class="tag">入门 · 神经网络</span>
+                <svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice" role="presentation">
+                  <line x1="30" y1="112" x2="370" y2="22" stroke="currentColor" stroke-width="2.5" opacity=".55" style="color:var(--neuron)"/>
+                  <g fill="#0f6b5c">
+                    <circle cx="70" cy="96" r="5"/><circle cx="104" cy="104" r="5"/><circle cx="138" cy="88" r="5"/>
+                    <circle cx="86" cy="72" r="5"/><circle cx="122" cy="66" r="5"/><circle cx="160" cy="98" r="5"/>
+                    <circle cx="66" cy="118" r="5"/><circle cx="150" cy="116" r="5"/>
+                  </g>
+                  <g fill="none" stroke="#9a5410" stroke-width="2.6">
+                    <path d="M238 34 l14 14 M252 34 l-14 14"/>
+                    <path d="M282 22 l14 14 M296 22 l-14 14"/>
+                    <path d="M262 58 l14 14 M276 58 l-14 14"/>
+                    <path d="M312 44 l14 14 M326 44 l-14 14"/>
+                    <path d="M292 84 l14 14 M306 84 l-14 14"/>
+                    <path d="M330 74 l14 14 M344 74 l-14 14"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="card-body">
+                <div class="card-head">
+                  <span class="no">06</span>
+                  <h3>单神经元小玩具</h3>
+                </div>
+                <p class="desc">拖一拖分界线，理解神经元怎么打分分类。</p>
+                <div class="open-row">
+                  <span class="open-btn">打开 <span class="arrow" aria-hidden="true">→</span></span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="bottom">
+        <p>柜子里的东西只增不减——新构件做好，就往这里添一张卡。</p>
+        <p>共 6 件 · 持续收纳中</p>
+      </footer>
+    </div>
+  </body>
+</html>
