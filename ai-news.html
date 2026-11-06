@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>AI 大事</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #EDF1F3;
+        --surface: #F7FAFB;
+        --panel: #FFFFFF;
+        --ink: #16222B;
+        --ink-soft: #46555F;
+        --ink-faint: #7A8791;
+        --line: rgba(38, 84, 102, 0.22);
+        --line-bright: rgba(38, 84, 102, 0.45);
+        --accent: #1F617E;
+        --accent-soft: rgba(31, 97, 126, 0.10);
+        --warn: #8A5A12;
+        --warn-bg: rgba(180, 120, 30, 0.12);
+        --radius: 6px;
+        --radius-sm: 3px;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0B0E14;
+          --surface: #0E161E;
+          --panel: #12161F;
+          --ink: #EDEAE2;
+          --ink-soft: #A7B4BC;
+          --ink-faint: #6E7B84;
+          --line: rgba(143, 184, 200, 0.32);
+          --line-bright: rgba(143, 184, 200, 0.52);
+          --accent: #8FB8C8;
+          --accent-soft: rgba(143, 184, 200, 0.10);
+          --warn: #D9A94E;
+          --warn-bg: rgba(217, 169, 78, 0.12);
+          color-scheme: dark;
+        }
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+        line-height: 1.65;
+      }
+      .wrap { max-width: 900px; margin: 0 auto; padding: 32px 24px 48px; }
+
+      /* ---------- head ---------- */
+      .head { border-bottom: 1px solid var(--line-bright); padding-bottom: 24px; }
+      .kicker {
+        display: inline-flex; align-items: center; gap: 8px;
+        color: var(--accent);
+        font-size: 12px; font-weight: 500;
+        letter-spacing: 0.4em;
+      }
+      .kicker::before { content: ""; width: 24px; height: 1px; background: var(--line-bright); }
+      h1 {
+        font-family: "Noto Serif SC", "Songti SC", serif;
+        font-weight: 700;
+        font-size: clamp(40px, 6.4vw, 56px);
+        line-height: 1.16;
+        margin: 16px 0 8px;
+        letter-spacing: 0.04em;
+      }
+      .head-sub {
+        font-family: "Noto Serif SC", "Songti SC", serif;
+        font-weight: 600;
+        font-size: clamp(17px, 3.2vw, 22px);
+        letter-spacing: 0.04em;
+        margin: 0;
+      }
+      .head-sub b { color: var(--accent); font-weight: 700; }
+      .head-desc {
+        margin: 14px 0 0;
+        font-size: 14px; line-height: 1.65;
+        color: var(--ink-soft);
+        max-width: 640px;
+      }
+      .head-desc b { color: var(--ink); font-weight: 700; }
+
+      /* ---------- filter ---------- */
+      .filter { margin: 28px 0 0; }
+      .filter-label { font-size: 12px; letter-spacing: 0.18em; color: var(--ink-faint); margin: 0 0 10px; }
+      .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+      .chip {
+        appearance: none; cursor: pointer; font: inherit;
+        font-size: 13px; font-weight: 500;
+        padding: 7px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--panel);
+        color: var(--ink-soft);
+      }
+      .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+      .chip[aria-pressed="true"] {
+        border-color: var(--line-bright);
+        background: var(--accent-soft);
+        color: var(--ink);
+        box-shadow: inset 0 0 0 1px var(--line-bright);
+      }
+      .chip .n { font-variant-numeric: tabular-nums; color: var(--accent); margin-left: 4px; }
+
+      /* ---------- list ---------- */
+      .section-head {
+        display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+        margin: 32px 0 16px;
+      }
+      .section-head h2 {
+        font-family: "Noto Serif SC", "Songti SC", serif;
+        font-weight: 700; font-size: clamp(24px, 4.4vw, 30px);
+        letter-spacing: 0.04em; line-height: 1.3; margin: 0;
+      }
+      .section-head .count {
+        font-size: 12px; font-weight: 500; letter-spacing: 0.16em;
+        padding: 4px 8px;
+        border: 1px solid var(--line); border-radius: var(--radius-sm);
+        color: var(--accent);
+      }
+      .section-head .rule { flex: 1; height: 1px; min-width: 40px; background: var(--line); }
+
+      .items {
+        list-style: none; margin: 0; padding: 0;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .item {
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr);
+        gap: 16px;
+        padding: 24px;
+        border-top: 1px solid var(--line);
+      }
+      .item:first-child { border-top: none; }
+      .item[hidden] { display: none; }
+      .item .no {
+        font-family: "Noto Serif SC", "Songti SC", serif;
+        font-weight: 700; font-size: 22px; line-height: 1.4;
+        color: var(--accent);
+        font-variant-numeric: tabular-nums;
+      }
+      .item h3 {
+        font-family: "Noto Serif SC", "Songti SC", serif;
+        font-weight: 700; font-size: 19px; line-height: 1.45;
+        letter-spacing: 0.04em; margin: 0 0 8px;
+      }
+      .item p { margin: 0; font-size: 15px; line-height: 1.7; color: var(--ink-soft); }
+      .item p b { color: var(--ink); font-weight: 700; }
+      .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+      .tag {
+        font-size: 12px; line-height: 1.5;
+        padding: 3px 9px;
+        border: 1px solid var(--line); border-radius: var(--radius-sm);
+        color: var(--ink-soft);
+      }
+      .tag.src { border-style: dashed; }
+      .tag.warn { border-color: transparent; background: var(--warn-bg); color: var(--warn); font-weight: 500; }
+      .empty {
+        padding: 32px 24px; text-align: center;
+        color: var(--ink-faint); font-size: 14px;
+      }
+      .empty[hidden] { display: none; }
+
+      footer {
+        margin-top: 40px;
+        border-top: 1px solid var(--line);
+        padding-top: 16px;
+        font-size: 12px; letter-spacing: 0.04em;
+        color: var(--ink-faint);
+      }
+      footer p { margin: 4px 0; }
+      footer b { color: var(--ink-soft); font-weight: 500; }
+
+      @media (max-width: 760px) {
+        .wrap { padding: 24px 16px 48px; }
+        .item { grid-template-columns: 40px minmax(0, 1fr); padding: 20px; }
+        .item .no { font-size: 20px; }
+        .item h3 { font-size: 18px; }
+      }
+      @media (max-width: 480px) {
+        .wrap { padding: 16px 16px 40px; }
+        h1 { font-size: 36px; }
+        .head-sub { font-size: 16px; }
+        .kicker { font-size: 11px; }
+        .section-head { gap: 8px; }
+        .section-head h2 { font-size: 22px; }
+        .section-head .count { font-size: 11px; }
+        .section-head .rule { min-width: 24px; }
+        .item { grid-template-columns: 32px minmax(0, 1fr); padding: 20px 16px; }
+        .item .no { font-size: 19px; }
+        .item h3 { font-size: 17px; }
+        .item p { font-size: 14px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * { transition: none !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <header class="head">
+        <span class="kicker">外 部 · 行 业 动 态</span>
+        <h1>AI 大事</h1>
+        <p class="head-sub">本周汇总 · <b>2026年11月2日</b>—<b>11月8日</b></p>
+        <p class="head-desc">这一栏<b>只放外部的 AI 动态</b>——实验室、公司与行业这一周的动向。它们不是你的待办，不用跟进；你自己的事在「我的大事」里。</p>
+      </header>
+
+      <div class="filter">
+        <p class="filter-label">按类看</p>
+        <div class="chips" role="group" aria-label="按类别筛选">
+          <button type="button" class="chip" data-filter="all" aria-pressed="true">全部<span class="n">6</span></button>
+          <button type="button" class="chip" data-filter="model" aria-pressed="false">模型发布<span class="n">4</span></button>
+          <button type="button" class="chip" data-filter="industry" aria-pressed="false">行业与资本<span class="n">1</span></button>
+          <button type="button" class="chip" data-filter="apply" aria-pressed="false">落地应用<span class="n">1</span></button>
+        </div>
+      </div>
+
+      <main>
+        <div class="section-head">
+          <h2>本周条目</h2>
+          <span class="count" id="visible-count">6 条</span>
+          <span class="rule" aria-hidden="true"></span>
+        </div>
+
+        <ol class="items" id="items">
+          <li class="item" data-cat="model">
+            <span class="no">01</span>
+            <div>
+              <h3>OpenAI 发布安全研究模型 GPT-6 Cyber</h3>
+              <p>11月5日发布，专攻漏洞发现与修复，厂商自报在 ExploitGym 基准上达 48.5%、已发现 81 个 Firefox 未知高危漏洞，并驱动了 Linux 内核安全研究；Daybreak 计划同步扩围，面向防御方与攻击面研究开放。以上性能数字为<b>厂商自报，未经独立复测</b>。</p>
+              <div class="meta">
+                <span class="tag">模型发布</span>
+                <span class="tag src">来源：AIRadar、AGI Hunt</span>
+                <span class="tag warn">数字为厂商自报</span>
+              </div>
+            </div>
+          </li>
+          <li class="item" data-cat="model">
+            <span class="no">02</span>
+            <div>
+              <h3>谷歌发布 Gemini Omni 1.2 Flash 视频模型</h3>
+              <p>11月5日发布，视频生成与编辑上限提至 15 秒，厂商称场景时间一致性与角色语音改进，API 价格下调 30%，已在 AI Studio 与 Gemini API 提供。</p>
+              <div class="meta">
+                <span class="tag">模型发布</span>
+                <span class="tag src">来源：AIRadar</span>
+              </div>
+            </div>
+          </li>
+          <li class="item" data-cat="model">
+            <span class="no">03</span>
+            <div>
+              <h3>百度开源 ERNIE 5.5 Flash Base</h3>
+              <p>11月5日开源，280B 总参数、每 token 激活 14B 的稀疏 MoE 基座模型，预训练 33.5T tokens，支持最高 100 万 token 上下文，权重开放。参数为<b>厂商自报，未经独立复测</b>。</p>
+              <div class="meta">
+                <span class="tag">模型发布</span>
+                <span class="tag src">来源：SynthePulse、AGI Hunt</span>
+                <span class="tag warn">参数为厂商自报</span>
+              </div>
+            </div>
+          </li>
+          <li class="item" data-cat="model">
+            <span class="no">04</span>
+            <div>
+              <h3>腾讯混元 Hy4 发布</h3>
+              <p>11月5日发布，约 770B 参数的 MoE 模型，100 万 token 上下文，新增视觉理解与 Computer Use 能力，面向金融、办公、游戏前端与研究场景。参数为<b>厂商自报，未经独立复测</b>。</p>
+              <div class="meta">
+                <span class="tag">模型发布</span>
+                <span class="tag src">来源：SynthePulse</span>
+                <span class="tag warn">参数为厂商自报</span>
+              </div>
+            </div>
+          </li>
+          <li class="item" data-cat="apply">
+            <span class="no">05</span>
+            <div>
+              <h3>Anthropic 推出 Claude 个人理财</h3>
+              <p>11月6日，Claude 新增个人财务管理工具，即起在美国面向 Pro、Max、Ultra 订阅用户逐步开放。</p>
+              <div class="meta">
+                <span class="tag">落地应用</span>
+                <span class="tag src">来源：Gadgets 360</span>
+              </div>
+            </div>
+          </li>
+          <li class="item" data-cat="industry">
+            <span class="no">06</span>
+            <div>
+              <h3>OpenAI 融资目标下调至 200 亿美元</h3>
+              <p>10月31日，据《金融时报》报道，OpenAI 本轮融资目标从 300 亿美元一路下调至 200 亿美元，正值 AI 股抛售；同周 SpaceX 完成了 400 亿美元 GPU 抵押债融资。</p>
+              <div class="meta">
+                <span class="tag">行业与资本</span>
+                <span class="tag src">来源：《金融时报》、n8nlab</span>
+              </div>
+            </div>
+          </li>
+          <li class="empty" id="empty" hidden>这一类本周没有条目。</li>
+        </ol>
+      </main>
+
+      <footer>
+        <p>检索范围为 <b>10月31日—11月6日</b>；标注「厂商自报」的数字未经独立复测，请按来源口径理解。</p>
+        <p>本周汇总（<b>2026年11月2日—11月8日</b>），更新于 <b>2026年11月6日</b>。</p>
+      </footer>
+
+    </div>
+    <script>
+      (function () {
+        var chips = Array.prototype.slice.call(document.querySelectorAll('[data-filter]'));
+        var items = Array.prototype.slice.call(document.querySelectorAll('#items .item'));
+        var count = document.getElementById('visible-count');
+        var empty = document.getElementById('empty');
+        function apply(key) {
+          var shown = 0;
+          chips.forEach(function (chip) {
+            chip.setAttribute('aria-pressed', chip.getAttribute('data-filter') === key ? 'true' : 'false');
+          });
+          items.forEach(function (item) {
+            var on = key === 'all' || item.getAttribute('data-cat') === key;
+            item.hidden = !on;
+            if (on) shown++;
+          });
+          empty.hidden = shown !== 0;
+          count.textContent = shown + ' 条';
+        }
+        chips.forEach(function (chip) {
+          chip.addEventListener('click', function () { apply(chip.getAttribute('data-filter')); });
+        });
+        apply('all');
+      })();
+    </script>
+  </body>
+</html>
