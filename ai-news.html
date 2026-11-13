@@ -14,16 +14,16 @@
     />
     <style>
       :root {
-        --bg: #EDF1F3;
-        --surface: #F7FAFB;
+        --bg: #F4F1EA;
+        --surface: #FBF9F4;
         --panel: #FFFFFF;
-        --ink: #16222B;
-        --ink-soft: #46555F;
-        --ink-faint: #7A8791;
-        --line: rgba(38, 84, 102, 0.22);
-        --line-bright: rgba(38, 84, 102, 0.45);
-        --accent: #1F617E;
-        --accent-soft: rgba(31, 97, 126, 0.10);
+        --ink: #23211C;
+        --ink-soft: #5C594F;
+        --ink-faint: #8A8578;
+        --line: rgba(160, 128, 74, 0.28);
+        --line-bright: rgba(160, 128, 74, 0.5);
+        --accent: #9A7B45;
+        --accent-soft: rgba(201, 162, 106, 0.12);
         --warn: #8A5A12;
         --warn-bg: rgba(180, 120, 30, 0.12);
         --radius: 6px;
@@ -33,15 +33,15 @@
       @media (prefers-color-scheme: dark) {
         :root {
           --bg: #0B0E14;
-          --surface: #0E161E;
+          --surface: #12161F;
           --panel: #12161F;
           --ink: #EDEAE2;
-          --ink-soft: #A7B4BC;
-          --ink-faint: #6E7B84;
-          --line: rgba(143, 184, 200, 0.32);
-          --line-bright: rgba(143, 184, 200, 0.52);
-          --accent: #8FB8C8;
-          --accent-soft: rgba(143, 184, 200, 0.10);
+          --ink-soft: #A7ABB5;
+          --ink-faint: #6E7480;
+          --line: rgba(201, 162, 106, 0.28);
+          --line-bright: rgba(201, 162, 106, 0.45);
+          --accent: #C9A26A;
+          --accent-soft: rgba(201, 162, 106, 0.10);
           --warn: #D9A94E;
           --warn-bg: rgba(217, 169, 78, 0.12);
           color-scheme: dark;
@@ -216,7 +216,7 @@
       <header class="head">
         <span class="kicker">外 部 · 行 业 动 态</span>
         <h1>AI 大事</h1>
-        <p class="head-sub">本周汇总 · <b>2026年11月2日</b>—<b>11月8日</b></p>
+        <p class="head-sub">本周汇总 · <b>2026年11月9日</b>—<b>11月15日</b></p>
         <p class="head-desc">这一栏<b>只放外部的 AI 动态</b>——实验室、公司与行业这一周的动向。它们不是你的待办，不用跟进；你自己的事在「我的大事」里。</p>
       </header>
 
@@ -224,9 +224,9 @@
         <p class="filter-label">按类看</p>
         <div class="chips" role="group" aria-label="按类别筛选">
           <button type="button" class="chip" data-filter="all" aria-pressed="true">全部<span class="n">6</span></button>
-          <button type="button" class="chip" data-filter="model" aria-pressed="false">模型发布<span class="n">4</span></button>
+          <button type="button" class="chip" data-filter="model" aria-pressed="false">模型发布<span class="n">3</span></button>
           <button type="button" class="chip" data-filter="industry" aria-pressed="false">行业与资本<span class="n">1</span></button>
-          <button type="button" class="chip" data-filter="apply" aria-pressed="false">落地应用<span class="n">1</span></button>
+          <button type="button" class="chip" data-filter="apply" aria-pressed="false">落地应用<span class="n">2</span></button>
         </div>
       </div>
 
@@ -238,72 +238,71 @@
         </div>
 
         <ol class="items" id="items">
-          <li class="item" data-cat="model">
+          <li class="item" data-cat="industry">
             <span class="no">01</span>
             <div>
-              <h3>OpenAI 发布安全研究模型 GPT-6 Cyber</h3>
-              <p>11月5日发布，专攻漏洞发现与修复，厂商自报在 ExploitGym 基准上达 48.5%、已发现 81 个 Firefox 未知高危漏洞，并驱动了 Linux 内核安全研究；Daybreak 计划同步扩围，面向防御方与攻击面研究开放。以上性能数字为<b>厂商自报，未经独立复测</b>。</p>
+              <h3>英伟达 CEO 黄仁勋辞职</h3>
+              <p>11月12日，黄仁勋辞去英伟达 CEO、总裁及董事职务；据《纽约时报》相关报道，其离职与涉芯片走私调查的东南亚合作伙伴高管有关，英伟达董事会已启动独立调查、称<b>无证据表明商业机密或国家安全受损</b>；英伟达尚未发布正式声明，也未宣布继任者。</p>
               <div class="meta">
-                <span class="tag">模型发布</span>
-                <span class="tag src">来源：AIRadar、AGI Hunt</span>
-                <span class="tag warn">数字为厂商自报</span>
+                <span class="tag">行业与资本</span>
+                <span class="tag src">来源：《纽约时报》相关报道；AGI HUNT 11月13日日报</span>
               </div>
             </div>
           </li>
           <li class="item" data-cat="model">
             <span class="no">02</span>
             <div>
-              <h3>谷歌发布 Gemini Omni 1.2 Flash 视频模型</h3>
-              <p>11月5日发布，视频生成与编辑上限提至 15 秒，厂商称场景时间一致性与角色语音改进，API 价格下调 30%，已在 AI Studio 与 Gemini API 提供。</p>
+              <h3>Claude Fable 5.2 登顶大模型榜</h3>
+              <p>Anthropic 11月9日发布 Claude Fable 5.2（及受限版 Mythos 5.2），在 Artificial Analysis 智能指数上以 <b>65 分</b>超过 Gemini 4 Carbon 的 60 分；该指数为第三方榜单、厂商各自引用，<b>未经独立复测</b>。</p>
               <div class="meta">
                 <span class="tag">模型发布</span>
-                <span class="tag src">来源：AIRadar</span>
+                <span class="tag src">来源：PYMNTS 11月12日</span>
+                <span class="tag warn">榜单未经独立复测</span>
               </div>
             </div>
           </li>
-          <li class="item" data-cat="model">
+          <li class="item" data-cat="apply">
             <span class="no">03</span>
             <div>
-              <h3>百度开源 ERNIE 5.5 Flash Base</h3>
-              <p>11月5日开源，280B 总参数、每 token 激活 14B 的稀疏 MoE 基座模型，预训练 33.5T tokens，支持最高 100 万 token 上下文，权重开放。参数为<b>厂商自报，未经独立复测</b>。</p>
+              <h3>三家同日把 AI 推向工作台</h3>
+              <p>11月10日，OpenAI 推出 ChatGPT 商家功能（Beta）、谷歌把 Gemini 接入 Adobe 与医疗场景（预览）、Anthropic 推出 Claude Sheets 与白板（Beta）及 Claude Data（正式版），三家同一天把 AI 助手塞进办公场景。</p>
               <div class="meta">
-                <span class="tag">模型发布</span>
-                <span class="tag src">来源：SynthePulse、AGI Hunt</span>
-                <span class="tag warn">参数为厂商自报</span>
+                <span class="tag">落地应用</span>
+                <span class="tag src">来源：The Neuron 11月11日</span>
               </div>
             </div>
           </li>
           <li class="item" data-cat="model">
             <span class="no">04</span>
             <div>
-              <h3>腾讯混元 Hy4 发布</h3>
-              <p>11月5日发布，约 770B 参数的 MoE 模型，100 万 token 上下文，新增视觉理解与 Computer Use 能力，面向金融、办公、游戏前端与研究场景。参数为<b>厂商自报，未经独立复测</b>。</p>
+              <h3>谷歌发布 Gemini 4 Hydrogen</h3>
+              <p>11月13日发布，主打日常任务、编程与智能体流程，官方称任务速度为 Gemini 3.8 Flash 的 <b>2.5 倍</b>，设四档思考级别。速度数字为<b>厂商自报，未经独立复测</b>。</p>
               <div class="meta">
                 <span class="tag">模型发布</span>
-                <span class="tag src">来源：SynthePulse</span>
-                <span class="tag warn">参数为厂商自报</span>
+                <span class="tag src">来源：AGI HUNT 11月13日日报</span>
+                <span class="tag warn">数字为厂商自报</span>
+              </div>
+            </div>
+          </li>
+          <li class="item" data-cat="model">
+            <span class="no">05</span>
+            <div>
+              <h3>Meta 发布最便宜模型 Muse Ember</h3>
+              <p>11月9日发布，输入价 <b>0.10 美元/百万 tokens</b>，为 Meta 迄今最便宜模型，面向重复性智能体任务。</p>
+              <div class="meta">
+                <span class="tag">模型发布</span>
+                <span class="tag src">来源：PYMNTS 11月12日</span>
               </div>
             </div>
           </li>
           <li class="item" data-cat="apply">
-            <span class="no">05</span>
-            <div>
-              <h3>Anthropic 推出 Claude 个人理财</h3>
-              <p>11月6日，Claude 新增个人财务管理工具，即起在美国面向 Pro、Max、Ultra 订阅用户逐步开放。</p>
-              <div class="meta">
-                <span class="tag">落地应用</span>
-                <span class="tag src">来源：Gadgets 360</span>
-              </div>
-            </div>
-          </li>
-          <li class="item" data-cat="industry">
             <span class="no">06</span>
             <div>
-              <h3>OpenAI 融资目标下调至 200 亿美元</h3>
-              <p>10月31日，据《金融时报》报道，OpenAI 本轮融资目标从 300 亿美元一路下调至 200 亿美元，正值 AI 股抛售；同周 SpaceX 完成了 400 亿美元 GPU 抵押债融资。</p>
+              <h3>苹果 AI 获准进入中国平板与笔记本</h3>
+              <p>11月9日，上海市网信办确认 Apple Intelligence 已完成平板、笔记本的注册；中国区功能由阿里 Qwen 模型支持，12 月随 iOS 27.3 向用户推送。</p>
               <div class="meta">
-                <span class="tag">行业与资本</span>
-                <span class="tag src">来源：《金融时报》、n8nlab</span>
+                <span class="tag">落地应用</span>
+                <span class="tag src">来源：路透社，经 Telegraph India 11月9日</span>
               </div>
             </div>
           </li>
@@ -312,8 +311,8 @@
       </main>
 
       <footer>
-        <p>检索范围为 <b>10月31日—11月6日</b>；标注「厂商自报」的数字未经独立复测，请按来源口径理解。</p>
-        <p>本周汇总（<b>2026年11月2日—11月8日</b>），更新于 <b>2026年11月6日</b>。</p>
+        <p>检索范围为 <b>11月9日—11月13日</b>；标注「厂商自报」的数字未经独立复测，请按来源口径理解。</p>
+        <p>本周汇总（<b>2026年11月9日—11月15日</b>），更新于 <b>2026年11月13日</b>。</p>
       </footer>
 
     </div>
